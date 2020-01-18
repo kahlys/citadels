@@ -27,6 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
+            isScrollable: true,
             indicatorColor: Colors.white,
             tabs: [
               Tab(text: "PLAYERS"),
