@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: TabBarView(
           children: [
             Scaffold(
-              body: _displayPlayerTable(),
+              body: _displayPlayerList(),
               floatingActionButton: new FloatingActionButton(
                 backgroundColor: Colors.blue,
                 onPressed: _addPlayerLayout,
@@ -61,37 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _displayPlayerTable() {
-    List<TableRow> rows = [];
-    rows.add(
-      TableRow(
-        decoration: BoxDecoration(color: Colors.blue),
-        children: [Text("PLAYER"), Text("AGE")],
-      ),
-    );
-    players.forEach((e) {
-      rows.add(
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.all(20.0),
-              child: Text(e),
-            ),
-            Text("-"),
-          ],
-        ),
-      );
-    });
-
-    return new Container(
-      margin: const EdgeInsets.all(20.0),
-      child: Table(children: rows),
-    );
-  }
-
   Widget _displayPlayerList() {
     return new Container(
-      margin: const EdgeInsets.only(top: 20.0),
+      margin: const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
       child: ListView.builder(
         itemBuilder: (context, index) {
           if (index >= players.length) {
@@ -105,8 +77,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildTodoItem(String player, int index) {
     return new Container(
-      child: new ListTile(
-        title: new Text(player),
+      color: Colors.white,
+      child: Row(
+        children: [
+          Expanded(
+            child: ListTile(
+              title: new Text(player),
+            ),
+            flex: 2,
+          ),
+          Expanded(
+            child: ListTile(
+              title: new Text(player),
+            ),
+            flex: 1,
+          ),
+        ],
       ),
     );
   }
