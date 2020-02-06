@@ -23,9 +23,39 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 6,
       child: Scaffold(
         appBar: AppBar(
+          actions: <Widget>[
+            FlatButton(
+                child: Icon(Icons.refresh, color: Colors.white),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return new AlertDialog(
+                        title: new Text('New Game'),
+                        content:
+                            new Text('Delete all datas and start a new game ?'),
+                        actions: <Widget>[
+                          new FlatButton(
+                              child: new Text('NO'),
+                              onPressed: () => Navigator.of(context).pop()),
+                          new FlatButton(
+                            child: Text("YES"),
+                            onPressed: () {
+                              setState(() {
+                                players = [];
+                              });
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }),
+          ],
           bottom: TabBar(
             isScrollable: true,
             indicatorColor: Colors.white,
@@ -34,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Tab(text: 'DISTRICTS'),
               Tab(text: 'COLORS'),
               Tab(text: 'COMPLETE'),
+              Tab(text: 'COINS'),
               Tab(text: 'RESULTS'),
             ],
           ),
@@ -42,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: TabBarView(
           children: [
             Scaffold(
-              body: _displayList(_displayPalyerItem),
+              body: _displayList(_displayPlayerItem),
               floatingActionButton: new FloatingActionButton(
                 backgroundColor: Colors.blue,
                 onPressed: _addPlayerLayout,
@@ -52,9 +83,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             // Icon(Icons.directions_car),
             Scaffold(body: _displayList(_displayDistrictItem)),
-            Scaffold(body: Text("wip")),
-            Scaffold(body: Text("wip")),
-            Scaffold(body: _displayList(_displayResultItem)),
+            Scaffold(body: _displayList(_displayColorsItem)),
+            Scaffold(body: _displayList(_displayCityItem)),
+            Scaffold(body: _displayList(_displayCoinItem)),
+            Scaffold(body: _displaySortedList(_displayResultItem)),
           ],
         ),
       ),
@@ -76,7 +108,32 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _displayPalyerItem(Player player, int index) {
+  Widget _displaySortedList(Widget Function(Player, int) itemsFunc) {
+    List<Player> playersSorted = new List.from(players);
+    playersSorted.sort((a, b) {
+      if (a.score() < b.score()) {
+        return 1;
+      } else if ((a.score() > b.score())) {
+        return -1;
+      } else {
+        return -Comparable.compare(a.coins, b.coins);
+      }
+    });
+    return new Container(
+      margin: const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
+      child: ListView.builder(
+        itemBuilder: (context, index) {
+          if (index >= players.length) {
+            return null;
+          }
+          Player player = playersSorted[index];
+          return itemsFunc(player, index);
+        },
+      ),
+    );
+  }
+
+  Widget _displayPlayerItem(Player player, int index) {
     return new Container(
       color: Colors.white,
       child: Row(
@@ -84,6 +141,34 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: ListTile(
               title: new Text(player.name),
+            ),
+            flex: 3,
+          ),
+          Expanded(
+            child: ListTile(
+              title:Icon(Icons.close),
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return new AlertDialog(
+                        title: new Text('Sure to delete player ?'),
+                        actions: <Widget>[
+                          new FlatButton(
+                              child: new Text('NO'),
+                              onPressed: () => Navigator.of(context).pop()),
+                          new FlatButton(
+                            child: Text("YES"),
+                            onPressed: () {
+                              setState(() => players.removeAt(index));
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+              },
             ),
           ),
         ],
@@ -122,9 +207,127 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _displayResultItem(Player player, int index) {
+  Widget _displayColorsItem(Player player, int index) {
     return new Container(
       color: Colors.white,
+      child: Row(
+        children: [
+          Expanded(
+            child: ListTile(
+              title: new Text(player.name),
+            ),
+            flex: 3,
+          ),
+          Expanded(
+            child: Checkbox(
+              value: !(player.scoreColor == 0),
+              onChanged: (val) {
+                setState(() {
+                  if (val) {
+                    player.scoreColor = 3;
+                  } else {
+                    player.scoreColor = 0;
+                  }
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _displayCityItem(Player player, int index) {
+    return new Container(
+      color: Colors.white,
+      child: Row(
+        children: [
+          Expanded(
+            child: ListTile(
+              title: new Text(player.name),
+            ),
+            flex: 3,
+          ),
+          Expanded(
+            child: Checkbox(
+              value: player.hasCompletedFirst(),
+              onChanged: (val) {
+                setState(() {
+                  if (val) {
+                    player.scoreCity = 4;
+                  } else {
+                    player.scoreCity = 0;
+                  }
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: Checkbox(
+              value: player.hasCompletedAfter(),
+              onChanged: (val) {
+                setState(() {
+                  if (val) {
+                    player.scoreCity = 2;
+                  } else {
+                    player.scoreCity = 0;
+                  }
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _displayCoinItem(Player player, int index) {
+    return new Container(
+      color: Colors.white,
+      child: Row(
+        children: [
+          Expanded(
+            child: ListTile(
+              title: new Text(player.name),
+            ),
+            flex: 3,
+          ),
+          Expanded(
+            child: ListTile(
+              title: new TextField(
+                controller: TextEditingController(
+                  text: player.coins.toString(),
+                ),
+                keyboardType: TextInputType.number,
+                onSubmitted: (val) {
+                  setState(() {
+                    player.coins = int.parse(val);
+                  });
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _displayResultItem(Player player, int index) {
+    Color backColor = Colors.white;
+    switch (index) {
+      case 0:
+        backColor = Color.fromRGBO(254, 225, 1, 0.2);
+        break;
+      case 1:
+        backColor = Color.fromRGBO(167, 167, 173, 0.2);
+        break;
+      case 2:
+        backColor = Color.fromRGBO(167, 112, 68, 0.2);
+        break;
+    }
+
+    return new Container(
+      color: backColor,
       child: Row(
         children: [
           Expanded(
@@ -154,7 +357,7 @@ class _MyHomePageState extends State<MyHomePage> {
               autofocus: true,
               onSubmitted: (val) {
                 setState(() {
-                  _addPlayer(val);
+                  players.add(Player(val));
                 });
                 Navigator.pop(context);
               },
@@ -168,10 +371,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-  void _addPlayer(String name) {
-    players.add(Player(name));
-  }
 }
 
 class Player {
@@ -179,6 +378,7 @@ class Player {
   int scoreDistrict = 0;
   int scoreColor = 0;
   int scoreCity = 0;
+  int coins = 0;
 
   Player(String name) {
     this.name = name;
@@ -186,5 +386,13 @@ class Player {
 
   int score() {
     return this.scoreDistrict + this.scoreColor + this.scoreCity;
+  }
+
+  bool hasCompletedFirst() {
+    return this.scoreCity == 4;
+  }
+
+  bool hasCompletedAfter() {
+    return this.scoreCity == 2;
   }
 }
