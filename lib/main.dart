@@ -134,8 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _displayPlayerItem(Player player, int index) {
-    return new Container(
-      color: Colors.white,
+    return new Card(
       child: Row(
         children: [
           Expanded(
@@ -177,8 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _displayDistrictItem(Player player, int index) {
-    return new Container(
-      color: Colors.white,
+    return new Card(
       child: Row(
         children: [
           Expanded(
@@ -215,8 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _displayColorsItem(Player player, int index) {
-    return new Container(
-      color: Colors.white,
+    return new Card(
       child: Row(
         children: [
           Expanded(
@@ -245,8 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _displayCityItem(Player player, int index) {
-    return new Container(
-      color: Colors.white,
+    return new Card(
       child: Row(
         children: [
           Expanded(
@@ -289,8 +285,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _displayCoinItem(Player player, int index) {
-    return new Container(
-      color: Colors.white,
+    return new Card(
       child: Row(
         children: [
           Expanded(
@@ -331,17 +326,17 @@ class _MyHomePageState extends State<MyHomePage> {
     Color backColor = Colors.white;
     switch (index) {
       case 0:
-        backColor = Color.fromRGBO(254, 225, 1, 0.2);
+        backColor = Color.fromRGBO(201, 176, 55, 1);
         break;
       case 1:
-        backColor = Color.fromRGBO(167, 167, 173, 0.2);
+        backColor = Color.fromRGBO(180, 180, 180, 1);
         break;
       case 2:
-        backColor = Color.fromRGBO(167, 112, 68, 0.2);
+        backColor = Color.fromRGBO(173, 138, 86, 1);
         break;
     }
 
-    return new Container(
+    return new Card(
       color: backColor,
       child: Row(
         children: [
