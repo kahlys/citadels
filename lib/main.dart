@@ -256,11 +256,12 @@ class _MyHomePageState extends State<MyHomePage> {
               value: player.hasCompletedFirst(),
               onChanged: (val) {
                 setState(() {
-                  if (val) {
-                    player.scoreCity = 4;
-                  } else {
-                    player.scoreCity = 0;
+                  for (var p in this.players) {
+                    if (p.scoreCity == 4 && p != player) {
+                      p.scoreCity = 2;
+                    }
                   }
+                  player.scoreCity = val ? 4 : 0;
                 });
               },
             ),
@@ -270,11 +271,7 @@ class _MyHomePageState extends State<MyHomePage> {
               value: player.hasCompletedAfter(),
               onChanged: (val) {
                 setState(() {
-                  if (val) {
-                    player.scoreCity = 2;
-                  } else {
-                    player.scoreCity = 0;
-                  }
+                  player.scoreCity = val ? 2 : 0;
                 });
               },
             ),
