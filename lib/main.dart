@@ -185,23 +185,30 @@ class _MyHomePageState extends State<MyHomePage> {
             child: ListTile(
               title: new Text(player.name),
             ),
-            flex: 3,
           ),
-          Expanded(
-            child: ListTile(
-              title: new TextField(
-                controller: TextEditingController(
-                  text: player.scoreDistrict.toString(),
-                ),
-                keyboardType: TextInputType.number,
-                onSubmitted: (val) {
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.remove_circle_outline),
+                onPressed: () {
                   setState(() {
-                    player.scoreDistrict = int.parse(val);
+                    if (player.scoreDistrict > 0) {
+                      player.scoreDistrict--;
+                    }
                   });
                 },
               ),
-            ),
-          ),
+              Text(player.scoreDistrict.toString()),
+              IconButton(
+                icon: Icon(Icons.add_circle_outline),
+                onPressed: () {
+                  setState(() {
+                    player.scoreDistrict++;
+                  });
+                },
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -292,20 +299,28 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             flex: 3,
           ),
-          Expanded(
-            child: ListTile(
-              title: new TextField(
-                controller: TextEditingController(
-                  text: player.coins.toString(),
-                ),
-                keyboardType: TextInputType.number,
-                onSubmitted: (val) {
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.remove_circle_outline),
+                onPressed: () {
                   setState(() {
-                    player.coins = int.parse(val);
+                    if (player.coins > 0) {
+                      player.coins--;
+                    }
                   });
                 },
               ),
-            ),
+              Text(player.coins.toString()),
+              IconButton(
+                icon: Icon(Icons.add_circle_outline),
+                onPressed: () {
+                  setState(() {
+                    player.coins++;
+                  });
+                },
+              ),
+            ],
           ),
         ],
       ),
