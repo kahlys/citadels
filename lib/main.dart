@@ -25,9 +25,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return DefaultTabController(
       length: 6,
       child: Scaffold(
+        // drawer: Drawer(),
         appBar: AppBar(
           actions: <Widget>[
-            FlatButton(
+            TextButton(
                 child: Icon(Icons.refresh, color: Colors.white),
                 onPressed: () {
                   showDialog(
@@ -38,10 +39,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         content:
                             new Text('Delete all datas and start a new game ?'),
                         actions: <Widget>[
-                          new FlatButton(
+                          new TextButton(
                               child: new Text('NO'),
                               onPressed: () => Navigator.of(context).pop()),
-                          new FlatButton(
+                          new TextButton(
                             child: Text("YES"),
                             onPressed: () {
                               setState(() {
@@ -153,10 +154,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     return new AlertDialog(
                       title: new Text('Sure to delete player ?'),
                       actions: <Widget>[
-                        new FlatButton(
+                        new TextButton(
                             child: new Text('NO'),
                             onPressed: () => Navigator.of(context).pop()),
-                        new FlatButton(
+                        new TextButton(
                           child: Text("YES"),
                           onPressed: () {
                             setState(() => players.removeAt(index));
