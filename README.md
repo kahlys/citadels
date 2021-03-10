@@ -1,6 +1,6 @@
 # citadels
 
-Score sheet app for **citadels** board game.
+Score sheet app for [**citadels**](https://boardgamegeek.com/boardgame/478/citadels) board game.
 
 | add players                             | set scores                            | results                                 |
 |-----------------------------------------|---------------------------------------|-----------------------------------------|
